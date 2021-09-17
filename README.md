@@ -6,6 +6,9 @@ Tired of cooking and forgetting who likes what? Want to keep track of your past 
 Data planning was done with [https://github.com/ondras/wwwsqldesigner/](https://github.com/ondras/wwwsqldesigner/).
 Load the `planning/sqlmap.xml` file into that site to see the map.
 
+Project planning done on Trello board:  
+[https://trello.com/b/I4aeN5Ij/cookscribe](https://trello.com/b/I4aeN5Ij/cookscribe)
+
 Basic plan is this:
 
 MVP
