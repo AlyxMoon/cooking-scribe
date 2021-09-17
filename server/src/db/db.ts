@@ -5,7 +5,9 @@ import models from './models'
 
 class Database {
   thinkagain: any
-  models: any[] = []
+  models: {
+    [key: string]: any
+  } = {}
 
   constructor (config: ConnectionOptions) {
     this.init(config)
@@ -20,14 +22,16 @@ class Database {
 
   configureModels = (): void => {
     for (const model of models) {
-      this.models.push(model(this.thinkagain))
+      const modelInstance = model(this.thinkagain)
+      this.models[modelInstance._schema.id] = modelInstance
     }
   }
 
   create = async (model: string, data: { [key: string]: any }): Promise<any> => {
-    const newModel = new this.models[0](data)
-    const result = await newModel.saveAll()
-    return result
+    if (!(model in this.models)) throw new Error(`This model does not exist: ${model}`)
+
+    const newModel = new this.models[model](data)
+    return newModel.saveAll()
   }
 }
 
