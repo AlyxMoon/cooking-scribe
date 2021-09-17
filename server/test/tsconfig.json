@@ -2,15 +2,12 @@
   "compilerOptions": {
     "target": "es2018",
     "module": "commonjs",
-    "outDir": "./lib",
-    "rootDir": "./src",
+    "outDir": "./dist",
+    "rootDir": "../",
     "strict": true,
     "esModuleInterop": true,
     "typeRoots": [
-      "node_modules/@types"
+      "../node_modules/@types"
     ]
-  },
-  "exclude": [
-    "./test"
-  ]
+  }
 }

@@ -1,5 +1,5 @@
-import { Id, NullableId, Paginated, Params, ServiceMethods } from '@feathersjs/feathers';
-import { Application } from '../../declarations';
+import { Id, NullableId, Paginated, Params, ServiceMethods } from '@feathersjs/feathers'
+import { Application } from '../../declarations'
 
 interface Data {}
 
@@ -10,43 +10,45 @@ export class Users implements ServiceMethods<Data> {
   options: ServiceOptions;
 
   constructor (options: ServiceOptions = {}, app: Application) {
-    this.options = options;
-    this.app = app;
+    this.options = options
+    this.app = app
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async find (params?: Params): Promise<Data[] | Paginated<Data>> {
-    return [];
+    return []
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async get (id: Id, params?: Params): Promise<Data> {
     return {
-      id, text: `A new message with ID: ${id}!`
-    };
+      id,
+      text: `A new message with ID: ${id}!`,
+      email: 'someone@example.com',
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async create (data: Data, params?: Params): Promise<Data> {
     if (Array.isArray(data)) {
-      return Promise.all(data.map(current => this.create(current, params)));
+      return Promise.all(data.map(current => this.create(current, params)))
     }
 
-    return data;
+    return data
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async update (id: NullableId, data: Data, params?: Params): Promise<Data> {
-    return data;
+    return data
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async patch (id: NullableId, data: Data, params?: Params): Promise<Data> {
-    return data;
+    return data
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async remove (id: NullableId, params?: Params): Promise<Data> {
-    return { id };
+    return { id }
   }
 }
