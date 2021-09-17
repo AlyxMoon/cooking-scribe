@@ -1,12 +1,12 @@
 import rethinkDB, { Connection, ConnectionOptions } from 'rethinkdb'
-import thinkagain from 'thinkagain'
+import thinkagain, { Document, Model, ThinkAgain } from 'thinkagain'
 
 import models from './models'
 
 class Database {
-  thinkagain: any
+  thinkagain: ThinkAgain
   models: {
-    [key: string]: any
+    [key: string]: Model,
   } = {}
 
   constructor (config: ConnectionOptions) {
@@ -27,7 +27,7 @@ class Database {
     }
   }
 
-  create = async (model: string, data: { [key: string]: any }): Promise<any> => {
+  create = async (model: string, data: { [key: string]: any }): Promise<Document> => {
     if (!(model in this.models)) throw new Error(`This model does not exist: ${model}`)
 
     const newModel = new this.models[model](data)

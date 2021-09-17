@@ -1,6 +1,7 @@
 import { formatISO } from 'date-fns'
+import { Model, ThinkAgain } from 'thinkagain'
 
-export default (thinkagain: any): any => {
+export default (thinkagain: ThinkAgain): Model => {
   return thinkagain.createModel('User', {
     type: 'object',
     properties: {
