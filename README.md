@@ -1,5 +1,9 @@
 # Family Recipe Box
 
+## Notes/Resources
+Data planning was done with [https://github.com/ondras/wwwsqldesigner/](https://github.com/ondras/wwwsqldesigner/).
+Load the `planning/sqlmap.xml` file into that site to see the map.
+
 Basic plan is this:
 
 MVP
