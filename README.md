@@ -1,4 +1,6 @@
-# Family Recipe Box
+# CookScribe
+
+Tired of cooking and forgetting who likes what? Want to keep track of your past successes (and let's be honest, mistakes!)? You need _CookScribe_.
 
 ## Notes/Resources
 Data planning was done with [https://github.com/ondras/wwwsqldesigner/](https://github.com/ondras/wwwsqldesigner/).
