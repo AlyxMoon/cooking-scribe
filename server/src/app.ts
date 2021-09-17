@@ -15,15 +15,14 @@ import middleware from './middleware'
 import services from './services'
 import appHooks from './app.hooks'
 import channels from './channels'
-import authentication from './authentication'
-// Don't remove this comment. It's needed to format import lines nicely.
+// import authentication from './authentication'
+
+import db from './db'
 
 const app: Application = express(feathers())
 export type HookContext<T = any> = { app: Application } & FeathersHookContext<T>;
 
-// Load app configuration
 app.configure(configuration())
-// Enable security, CORS, compression, favicon and body parsing
 app.use(helmet({
   contentSecurityPolicy: false,
 }))
@@ -36,12 +35,13 @@ app.use(favicon(path.join(app.get('public'), 'favicon.ico')))
 app.use('/', express.static(app.get('public')))
 
 // Set up Plugins and providers
+app.configure(db)
 app.configure(express.rest())
 app.configure(socketio())
 
 // Configure other middleware (see `middleware/index.ts`)
 app.configure(middleware)
-app.configure(authentication)
+// app.configure(authentication)
 // Set up our services (see `services/index.ts`)
 app.configure(services)
 // Set up event channels (see channels.ts)
