@@ -1,15 +1,27 @@
-import { Id, NullableId, Paginated, Params, ServiceMethods } from '@feathersjs/feathers'
+import { NullableId, Paginated, Params, ServiceMethods } from '@feathersjs/feathers'
 import { Application } from '../../declarations'
 
-interface Data {}
+interface Data {
+  id: string,
+  username: string,
+  email: string,
+  password?: string,
+  updatedAt?: string,
+  createdAt?: string,
+}
 
-interface ServiceOptions {}
+interface ServiceOptions {
+  id?: string
+}
 
 export class Users implements ServiceMethods<Data> {
+  id = 'users'
   app: Application;
   options: ServiceOptions;
 
   constructor (options: ServiceOptions = {}, app: Application) {
+    if (!options.id) options.id = 'id'
+
     this.options = options
     this.app = app
   }
@@ -20,21 +32,17 @@ export class Users implements ServiceMethods<Data> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async get (id: Id, params?: Params): Promise<Data> {
+  async get (id: string, params?: Params): Promise<Data> {
     return {
       id,
-      text: `A new message with ID: ${id}!`,
       email: 'someone@example.com',
+      username: 'some guy',
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async create (data: Data, params?: Params): Promise<Data> {
-    if (Array.isArray(data)) {
-      return Promise.all(data.map(current => this.create(current, params)))
-    }
-
-    return data
+    return this.app.get('rethinkdb').create('User', data)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -48,7 +56,11 @@ export class Users implements ServiceMethods<Data> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async remove (id: NullableId, params?: Params): Promise<Data> {
-    return { id }
+  async remove (id: string, params?: Params): Promise<Data> {
+    return {
+      id,
+      email: 'someone@example.com',
+      username: 'some guy',
+    }
   }
 }
