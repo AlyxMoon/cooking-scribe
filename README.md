@@ -23,3 +23,7 @@ Further Exploration
 - I want to be able to see a calendar where I can set when I will be making recipes, or when other people in my group make recipes
 - I want to be able to export this calendar to Google Calendar.
 - I want to be able to make a grocery list from the recipes I will be making, in a selected period of time
+
+
+### Misc Notes
+- currently doing Typescript research
