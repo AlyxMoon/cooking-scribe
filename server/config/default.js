@@ -17,7 +17,7 @@ module.exports = {
     })(),
   },
   authentication: {
-    entity: 'User',
+    entity: 'user',
     service: 'users',
     secret: 'DyAgWrWdLf0ndcv+eYAPhNuzBgs=',
     authStrategies: [

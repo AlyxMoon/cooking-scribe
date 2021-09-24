@@ -16,7 +16,7 @@ interface ServiceOptions {
 }
 
 export class Users implements ServiceMethods<Data> {
-  id = 'users'
+  id = 'id'
   app: Application
   options: ServiceOptions
   db: DatabaseType
