@@ -4,7 +4,7 @@ import rest from '@feathersjs/rest-client'
 import authentication from '@feathersjs/authentication-client'
 
 const VuexModule = createModule({
-  namespaced: 'user',
+  namespaced: 'feathers',
   strict: false,
 })
 
@@ -23,13 +23,18 @@ class FeathersStore extends VuexModule {
     users: 'users',
   }
 
+  constructor () {
+    super()
+
+    console.log(this.client.service('users'))
+  }
+
   get apiUsers (): any {
     return this.client.service(this.services.users)
   }
 
   @action
   async login (options: Record<string, any> = {}): Promise<any> {
-    console.log('test', options)
     return this.client.authenticate({
       ...options,
       strategy: options.strategy || 'local',

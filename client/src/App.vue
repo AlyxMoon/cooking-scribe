@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link :to="{ name: 'Signup' }">Sign Up</router-link>
   </div>
   <router-view/>
 </template>
@@ -12,7 +12,7 @@ import { vxm } from '@/store'
 
 export default class App extends Vue {
   created (): void {
-    this.login({ email: 'testemail10@email.com', password: 'password' })
+    // this.login({ email: 'testemail10@email.com', password: 'password' })
   }
 
   login (options: Record<any, string> = {}): Promise<any> {

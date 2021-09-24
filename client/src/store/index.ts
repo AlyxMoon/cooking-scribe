@@ -15,6 +15,8 @@ export const store = createStore({
   },
 })
 
+console.log(store)
+
 export const vxm = {
   feathers: createProxy(store, feathersModule),
 }
