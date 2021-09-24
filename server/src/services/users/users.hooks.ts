@@ -11,7 +11,7 @@ export default {
     find: [
       authenticate('jwt'),
       (context: HookContext): HookContext => {
-        console.log('params', context.params)
+        console.log('params', context.params.query)
         return context
       },
     ],
@@ -30,7 +30,7 @@ export default {
     ],
     find: [
       (context: HookContext): HookContext => {
-        console.log('data', context.data)
+        console.log('data', context.result)
         return context
       },
     ],

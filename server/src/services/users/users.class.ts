@@ -28,8 +28,11 @@ export class Users implements ServiceMethods<Data> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async find (params?: Params): Promise<Data[] | Paginated<Data>> {
-    return []
+  async find (params: Params = {}): Promise<Data[] | Paginated<Data>> {
+    console.log('I am in find now', params)
+    const results = await this.db.find('User', params.query)
+
+    return results.map((result: any) => ({ ...result }))
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

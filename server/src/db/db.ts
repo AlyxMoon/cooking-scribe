@@ -29,8 +29,24 @@ class Database {
     }
   }
 
-  find = async (model: KnownModels, filters = {}): Promise<Document> => {
-    return {}
+  find = async (model: KnownModels, filters: Record<string, any> = {}): Promise<Document[]> => {
+    console.log('find in the database')
+    const {
+      $limit: limit,
+      ...searchParams
+    } = (filters)
+
+    const results: Document[] = []
+
+    if (limit) {
+      const documents = await this.models[model].filter(searchParams).limit(limit).run()
+      results.push(...documents)
+    } else {
+      const documents = await this.models[model].filter(searchParams).run()
+      results.push(...documents)
+    }
+
+    return results
   }
 
   create = async (model: KnownModels, data: { [key: string]: any }): Promise<Document> => {

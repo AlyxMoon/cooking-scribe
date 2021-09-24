@@ -12,7 +12,7 @@ import { vxm } from '@/store'
 
 export default class App extends Vue {
   created (): void {
-    this.login({ email: 'testemail4@email.com', password: 'password' })
+    this.login({ email: 'testemail10@email.com', password: 'password' })
   }
 
   login (options: Record<any, string> = {}): Promise<any> {
