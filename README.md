@@ -27,3 +27,4 @@ Further Exploration
 
 ### Misc Notes
 - currently doing Typescript research
+- still doing Typescript research
