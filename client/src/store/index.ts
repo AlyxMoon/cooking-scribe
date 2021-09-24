@@ -1,8 +1,9 @@
 import { createStore } from 'vuex'
+import { createProxy, extractVuexModule } from 'vuex-class-component'
 
-import * as feathers from './modules/feathers'
+import feathersModule from './modules/feathers'
 
-export default createStore({
+export const store = createStore({
   state: {
   },
   mutations: {
@@ -10,6 +11,10 @@ export default createStore({
   actions: {
   },
   modules: {
-    feathers,
+    ...extractVuexModule(feathersModule),
   },
 })
+
+export const vxm = {
+  feathers: createProxy(store, feathersModule),
+}

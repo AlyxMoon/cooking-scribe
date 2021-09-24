@@ -6,6 +6,26 @@
   <router-view/>
 </template>
 
+<script lang="ts">
+import { Vue } from 'vue-class-component'
+import { vxm } from '@/store'
+
+export default class App extends Vue {
+  created (): void {
+    this.login({ email: 'testemail4@email.com', password: 'password' })
+  }
+
+  login (options: Record<any, string> = {}): Promise<any> {
+    return vxm.feathers.login(options)
+  }
+
+  logout (): Promise<any> {
+    return vxm.feathers.logout()
+  }
+}
+
+</script>
+
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

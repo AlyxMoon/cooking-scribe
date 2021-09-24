@@ -3,6 +3,8 @@ import thinkagain, { Document, Model, ThinkAgain } from 'thinkagain'
 
 import models from './models'
 
+type KnownModels = 'User'
+
 class Database {
   thinkagain: ThinkAgain
   models: {
@@ -27,9 +29,11 @@ class Database {
     }
   }
 
-  create = async (model: string, data: { [key: string]: any }): Promise<Document> => {
-    if (!(model in this.models)) throw new Error(`This model does not exist: ${model}`)
+  find = async (model: KnownModels, filters = {}): Promise<Document> => {
+    return {}
+  }
 
+  create = async (model: KnownModels, data: { [key: string]: any }): Promise<Document> => {
     const newModel = new this.models[model](data)
     return newModel.saveAll()
   }

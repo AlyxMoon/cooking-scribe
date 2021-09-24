@@ -1,29 +1,30 @@
 import { NullableId, Paginated, Params, ServiceMethods } from '@feathersjs/feathers'
 import { Application } from '../../declarations'
+import { DatabaseType } from '../../db'
 
-interface Data {
+type Data = {
   id: string,
   username: string,
   email: string,
   password?: string,
   updatedAt?: string,
   createdAt?: string,
-}
+} | Error
 
 interface ServiceOptions {
-  id?: string
+  paginate?: any;
 }
 
 export class Users implements ServiceMethods<Data> {
   id = 'users'
-  app: Application;
-  options: ServiceOptions;
+  app: Application
+  options: ServiceOptions
+  db: DatabaseType
 
   constructor (options: ServiceOptions = {}, app: Application) {
-    if (!options.id) options.id = 'id'
-
     this.options = options
     this.app = app
+    this.db = app.get('rethinkdb') as DatabaseType
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -42,7 +43,8 @@ export class Users implements ServiceMethods<Data> {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async create (data: Data, params?: Params): Promise<Data> {
-    return this.app.get('rethinkdb').create('User', data)
+    const result = await this.db.create('User', data)
+    return { ...result }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

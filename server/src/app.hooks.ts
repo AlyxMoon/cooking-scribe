@@ -1,9 +1,14 @@
-// Application hooks that run for every service
-// Don't remove this comment. It's needed to format import lines nicely.
+import { HookContext, HooksObject } from '@feathersjs/feathers'
 
-export default {
+const hooks: HooksObject<any> = {
   before: {
-    all: [],
+    all: [
+      (context: HookContext): HookContext => {
+        console.log(`heyo we are in a route | ${context.path} | ${context.method} | ${context.type}`)
+
+        return context
+      },
+    ],
     find: [],
     get: [],
     create: [],
@@ -13,10 +18,17 @@ export default {
   },
 
   after: {
-    all: [],
+    all: [
+      (context: HookContext): HookContext => {
+        console.log(`heyo we are in a route | ${context.path} | ${context.method} | ${context.type}`)
+
+        return context
+      },
+    ],
     find: [],
     get: [],
-    create: [],
+    create: [
+    ],
     update: [],
     patch: [],
     remove: [],
@@ -32,3 +44,5 @@ export default {
     remove: [],
   },
 }
+
+export default hooks

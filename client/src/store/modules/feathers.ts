@@ -1,42 +1,45 @@
+import { action, createModule } from 'vuex-class-component'
 import feathers, { Application } from '@feathersjs/feathers'
 import rest from '@feathersjs/rest-client'
 import authentication from '@feathersjs/authentication-client'
 
-export type State = {
-  client: Application,
-  services: {
-    users: 'users',
-  },
+const VuexModule = createModule({
+  namespaced: 'user',
+  strict: false,
+})
+
+export type Services = {
+  users: 'users'
 }
 
-export const state: State = {
-  client: feathers()
-    .configure(rest('http://localhost:3030').fetch)
+class FeathersStore extends VuexModule {
+  client: Application = feathers()
+    .configure(rest('http://localhost:3030').fetch(fetch))
     .configure(authentication({
       path: 'authentication',
-    })),
-  services: {
+    }))
+
+  services: Services = {
     users: 'users',
-  },
-}
+  }
 
-export type ActionContext = {
-  state: State,
-}
+  get apiUsers (): any {
+    return this.client.service(this.services.users)
+  }
 
-export const actions = {
-  login: ({ state }: ActionContext, options: Record<string, any>): any => {
-    return state.client.authenticate({
+  @action
+  async login (options: Record<string, any> = {}): Promise<any> {
+    console.log('test', options)
+    return this.client.authenticate({
       ...options,
       strategy: options.strategy || 'local',
     })
-  },
+  }
 
-  logout: ({ state }: ActionContext): any => {
-    return state.client.logout()
-  },
+  @action
+  async logout (): Promise<any> {
+    return this.client.logout()
+  }
 }
 
-export const getters = {
-  apiUsers: ({ client, services }: State): any => client.service(services.users),
-}
+export default FeathersStore

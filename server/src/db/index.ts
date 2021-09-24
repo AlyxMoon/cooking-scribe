@@ -3,6 +3,8 @@ import { ConnectionOptions } from 'rethinkdb'
 
 import Database from './db'
 
+export interface DatabaseType extends Database {}
+
 export default (app: Application): void => {
   const config = app.get('database') as ConnectionOptions
 
