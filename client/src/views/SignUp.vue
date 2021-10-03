@@ -1,5 +1,6 @@
 <template>
   <div class="page-sign-up">
+    {{ user1 }}
     <form
       class="pure-form pure-form-stacked"
       @submit.prevent="register"
@@ -21,41 +22,114 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
-import { mapActions } from 'vuex'
+import { defineComponent } from 'vue'
+import { mapActions, mapMutations, mapState } from 'vuex'
+
+import { LoginData, UserData } from '@/store/modules/auth'
 import { SignUpUserData } from '@/store/modules/users'
 
-@Options({
-  methods: {
-    ...mapActions('users', ['createUser']),
+// @Options({
+
+// })
+// export default class SignUp extends Vue {
+//   user1!: UserData
+//   login!: (data: LoginData) => Promise<any>
+//   createUser!: (data: SignUpUserData) => Promise<any>
+//   setUser!: (data: UserData) => void
+
+//   get testUser (): UserData {
+//     // return this.$store.
+//     return this.$store.state.auth.user
+//   }
+
+//   async register (): Promise<void> {
+//     try {
+//       const newUser = await this.createUser({
+//         ...this.user,
+//       })
+
+//       // console.log(newUser)
+
+//       const result = await this.login({
+//         email: this.user.email,
+//         password: this.user.password,
+//       })
+
+//       // console.log(result)
+//       // console.log(this.user1)
+//       // this.setUser({ username: 'whatdup', email: 'someemail', id: '1' })
+//       console.log(this.$store.state.auth.user)
+//       console.log(this.$store)
+//       console.log(this.testUser)
+//     } catch (error) {
+//       return console.error(error)
+//     }
+
+//     // const result = await vxm.feathers.login({
+//     //   email: this.user.email,
+//     //   password: this.user.password,
+//     // })
+
+//     // console.log(result)
+//   }
+// }
+
+// type ComponentData = {
+//   user: SignUpUserData,
+// }
+
+export default defineComponent({
+  name: 'SignUp',
+  data: () => ({
+    user: {
+      email: 'email1@email.com',
+      username: 'user1',
+      password: 'password',
+    },
+  }),
+
+  computed: {
+    ...mapState('auth', {
+      user1: 'user',
+    }),
   },
-})
-export default class SignUp extends Vue {
-  createUser!: (data: SignUpUserData) => Promise<any>
 
-  user: SignUpUserData = {
-    email: 'email1@email.com',
-    username: 'user1',
-    password: 'password',
-  }
+  methods: {
+    ...mapActions('auth', ['login']),
+    ...mapActions('users', ['createUser']),
+    ...mapMutations('auth', ['setUser']),
 
-  async register (): Promise<void> {
-    try {
-      console.log(await this.createUser({
-        ...this.user,
-      }))
-    } catch (error) {
-      return console.error(error)
-    }
+    async register (): Promise<void> {
+      try {
+        const newUser = await this.createUser({
+          ...this.user,
+        })
 
-    // const result = await vxm.feathers.login({
-    //   email: this.user.email,
-    //   password: this.user.password,
-    // })
+        // console.log(newUser)
+
+        const result = await this.login({
+          email: this.user.email,
+          password: this.user.password,
+        })
+
+        // console.log(result)
+        // console.log(this.user1)
+        // this.setUser({ username: 'whatdup', email: 'someemail', id: '1' })
+        console.log(this.$store.state.auth.user)
+        console.log(this.$store)
+      } catch (error) {
+        return console.error(error)
+      }
+
+      // const result = await vxm.feathers.login({
+      //   email: this.user.email,
+      //   password: this.user.password,
+      // })
 
     // console.log(result)
-  }
-}
+    },
+  },
+})
 </script>
 
 <style lang="scss" scoped>
