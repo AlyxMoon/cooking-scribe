@@ -3,48 +3,15 @@
     <router-link to="/">Home</router-link> |
     <router-link :to="{ name: 'Signup' }">Sign Up</router-link>
   </nav>
-
-  <div>
-    <div>{{ user }}</div>
-    <div v-if="isLoggedIn">
-      User: {{ user.username }}
-    </div>
-    <div v-else>
-      Not Logged In
-    </div>
-  </div>
-
   <router-view/>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { defineComponent } from 'vue'
 
-import { UserData } from './store/modules/auth'
-
-@Options({
-  computed: {
-    ...mapState('auth', {
-      user: 'user',
-    }),
-    ...mapGetters('auth', ['isLoggedIn']),
-  },
-  methods: {
-    ...mapMutations('auth', ['setUser']),
-  },
+export default defineComponent({
+  name: 'App',
 })
-export default class App extends Vue {
-  user!: UserData
-  isLoggedIn!: boolean
-  setUser!: (data: UserData) => void
-
-  created (): void {
-    console.log(this.user, this.isLoggedIn)
-    this.setUser({ id: '123', username: 'hello', email: 'someguy@email.com' })
-    console.log(this.user, this.isLoggedIn)
-  }
-}
 </script>
 
 <style lang="scss">

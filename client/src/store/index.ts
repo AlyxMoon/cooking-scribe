@@ -1,8 +1,9 @@
-import { createStore } from 'vuex'
-import { extractVuexModule } from 'vuex-class-component'
+import { createStore, Store } from 'vuex'
+import { AuthenticationResult } from '@feathersjs/authentication'
 
-import authModule from './modules/auth'
-import usersModule from './modules/users'
+import client from '@/lib/api'
+import * as authModule from './modules/auth'
+import * as usersModule from './modules/users'
 
 export const store = createStore({
   state: {
@@ -12,7 +13,16 @@ export const store = createStore({
   actions: {
   },
   modules: {
-    ...extractVuexModule(authModule),
-    ...extractVuexModule(usersModule),
+    auth: authModule,
+    users: usersModule,
   },
+
+  plugins: [
+    (store: Store<Record<string, unknown>>): void => {
+      client.authentication.service.on('created', (data: AuthenticationResult) => {
+        console.log('authenticated boooyeah')
+        store.commit('auth/setUser', data.user)
+      })
+    },
+  ],
 })

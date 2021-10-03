@@ -1,10 +1,6 @@
-import { action, createModule, mutation } from 'vuex-class-component'
+import { ActionContext } from 'vuex'
+import { AuthenticationResult } from '@feathersjs/authentication'
 import client from '@/lib/api'
-
-const VuexModule = createModule({
-  namespaced: 'auth',
-  strict: true,
-})
 
 export type AuthenticationStrategies = 'local' | 'jwt' | 'oauth'
 
@@ -21,59 +17,41 @@ export type UserData = {
   password?: string,
 }
 
-export type AuthenticationCreatedEventData = {
-  accessToken: string,
-  authentication: {
-    accessToken: string,
-    payload: Record<string, number | string>,
-    strategy: AuthenticationStrategies,
-  },
-  user: UserData,
+type State = {
+  user: UserData | null,
 }
 
-class AuthModule extends VuexModule {
-  user: UserData | null = null
+type ModuleActionContent = ActionContext<State, Record<string, unknown>>
 
-  constructor () {
-    super()
+export const namespaced = true
 
-    this.registerEventListeners()
-  }
+export const state: State = {
+  user: null,
+}
 
-  registerEventListeners (): void {
-    client.authentication.service.on('created', (data: AuthenticationCreatedEventData) => {
-      this.setUser(data.user)
-    })
-  }
+export const getters = {
+  isLoggedIn: (state: State): boolean => {
+    return !!state.user
+  },
+}
 
-  get isLoggedIn (): boolean {
-    return !!this.user
-  }
-
-  @action
-  async login (data: LoginData): Promise<any> {
+export const actions = {
+  login: async (context: ModuleActionContent, data: LoginData): Promise<AuthenticationResult> => {
     const result = await client.authenticate({
       ...data,
       strategy: data.strategy || 'local',
     })
 
-    // console.log('heyo', result)
-    // console.log(this.setUser)
-    // this.setUser(result.user)
-
     return result
-  }
+  },
 
-  @action
-  async logout (): Promise<any> {
+  logout: async (): Promise<AuthenticationResult | null> => {
     return client.logout()
-  }
-
-  @mutation setUser (user: UserData | null): void {
-    console.log('------ running mutation', this.user)
-    this.user = user
-    console.log('------ updated mutation', this.user)
-  }
+  },
 }
 
-export default AuthModule
+export const mutations = {
+  setUser: (state: State, user: UserData | null): void => {
+    state.user = user
+  },
+}

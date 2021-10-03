@@ -23,63 +23,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { mapActions, mapMutations, mapState } from 'vuex'
-
-import { LoginData, UserData } from '@/store/modules/auth'
-import { SignUpUserData } from '@/store/modules/users'
-
-// @Options({
-
-// })
-// export default class SignUp extends Vue {
-//   user1!: UserData
-//   login!: (data: LoginData) => Promise<any>
-//   createUser!: (data: SignUpUserData) => Promise<any>
-//   setUser!: (data: UserData) => void
-
-//   get testUser (): UserData {
-//     // return this.$store.
-//     return this.$store.state.auth.user
-//   }
-
-//   async register (): Promise<void> {
-//     try {
-//       const newUser = await this.createUser({
-//         ...this.user,
-//       })
-
-//       // console.log(newUser)
-
-//       const result = await this.login({
-//         email: this.user.email,
-//         password: this.user.password,
-//       })
-
-//       // console.log(result)
-//       // console.log(this.user1)
-//       // this.setUser({ username: 'whatdup', email: 'someemail', id: '1' })
-//       console.log(this.$store.state.auth.user)
-//       console.log(this.$store)
-//       console.log(this.testUser)
-//     } catch (error) {
-//       return console.error(error)
-//     }
-
-//     // const result = await vxm.feathers.login({
-//     //   email: this.user.email,
-//     //   password: this.user.password,
-//     // })
-
-//     // console.log(result)
-//   }
-// }
-
-// type ComponentData = {
-//   user: SignUpUserData,
-// }
+import { mapActions } from 'vuex'
 
 export default defineComponent({
   name: 'SignUp',
+
   data: () => ({
     user: {
       email: 'email1@email.com',
@@ -88,45 +36,23 @@ export default defineComponent({
     },
   }),
 
-  computed: {
-    ...mapState('auth', {
-      user1: 'user',
-    }),
-  },
-
   methods: {
     ...mapActions('auth', ['login']),
     ...mapActions('users', ['createUser']),
-    ...mapMutations('auth', ['setUser']),
 
     async register (): Promise<void> {
       try {
-        const newUser = await this.createUser({
+        await this.createUser({
           ...this.user,
         })
 
-        // console.log(newUser)
-
-        const result = await this.login({
+        await this.login({
           email: this.user.email,
           password: this.user.password,
         })
-
-        // console.log(result)
-        // console.log(this.user1)
-        // this.setUser({ username: 'whatdup', email: 'someemail', id: '1' })
-        console.log(this.$store.state.auth.user)
-        console.log(this.$store)
       } catch (error) {
         return console.error(error)
       }
-
-      // const result = await vxm.feathers.login({
-      //   email: this.user.email,
-      //   password: this.user.password,
-      // })
-
-    // console.log(result)
     },
   },
 })

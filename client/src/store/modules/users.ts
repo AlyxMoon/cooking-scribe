@@ -1,22 +1,41 @@
-import { action, createModule } from 'vuex-class-component'
+import { ActionContext } from 'vuex'
+import { AuthenticationResult } from '@feathersjs/authentication'
 import client from '@/lib/api'
 
-const VuexModule = createModule({
-  namespaced: 'users',
-  strict: true,
-})
-
-export type SignUpUserData = {
+export type CreateUserData = {
   email: string,
   username: string,
   password: string,
 }
 
-class UsersModule extends VuexModule {
-  @action
-  async createUser (data: SignUpUserData): Promise<any> {
-    return client.service('users').create(data)
-  }
+type State = Record<string, unknown>
+
+type ModuleActionContent = ActionContext<State, Record<string, unknown>>
+
+export const namespaced = true
+
+export const state: State = {
+  user: null,
 }
 
-export default UsersModule
+export const getters = {
+  isLoggedIn: (state: State): boolean => {
+    return !!state.user
+  },
+}
+
+export const actions = {
+  createUser: async (
+    context: ModuleActionContent,
+    data: CreateUserData,
+  ): Promise<any> => {
+    return client.service('users').create(data)
+  },
+
+  logout: async (): Promise<AuthenticationResult | null> => {
+    return client.logout()
+  },
+}
+
+export const mutations = {
+}
