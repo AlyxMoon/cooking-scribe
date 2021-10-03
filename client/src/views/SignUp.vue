@@ -22,35 +22,26 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
-import { mapGetters } from 'vuex'
-// import { vxm } from '@/store'
-
-type SignUpUserData = {
-  email: string,
-  username: string,
-  password: string,
-}
+import { mapActions } from 'vuex'
+import { SignUpUserData } from '@/store/modules/users'
 
 @Options({
-  computed: {
-    ...mapGetters('feathers', ['apiUsers']),
+  methods: {
+    ...mapActions('users', ['createUser']),
   },
 })
 export default class SignUp extends Vue {
+  createUser!: (data: SignUpUserData) => Promise<any>
+
   user: SignUpUserData = {
     email: 'email1@email.com',
     username: 'user1',
     password: 'password',
   }
 
-  apiUsers: any
-
   async register (): Promise<void> {
-    // console.log(vxm.feathers)
-    // console.log(vxm.feathers.apiUsers)
-
     try {
-      console.log(await this.apiUsers.create({
+      console.log(await this.createUser({
         ...this.user,
       }))
     } catch (error) {
