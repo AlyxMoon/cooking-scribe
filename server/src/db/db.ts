@@ -3,7 +3,7 @@ import thinkagain, { Document, Model, ThinkAgain } from 'thinkagain'
 
 import models from './models'
 
-type KnownModels = 'User'
+type KnownModels = 'Users' | 'Groups'
 
 class Database {
   thinkagain: ThinkAgain
@@ -30,7 +30,6 @@ class Database {
   }
 
   find = async (model: KnownModels, filters: Record<string, any> = {}): Promise<Document[]> => {
-    console.log('find in the database')
     const {
       $limit: limit,
       ...searchParams

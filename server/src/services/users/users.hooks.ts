@@ -1,4 +1,3 @@
-import { HookContext } from '@feathersjs/feathers'
 import * as feathersAuthentication from '@feathersjs/authentication'
 import * as local from '@feathersjs/authentication-local'
 
@@ -10,10 +9,6 @@ export default {
     all: [],
     find: [
       authenticate('jwt'),
-      (context: HookContext): HookContext => {
-        console.log('params', context.params.query)
-        return context
-      },
     ],
     get: [authenticate('jwt')],
     create: [hashPassword('password')],
@@ -28,12 +23,7 @@ export default {
       // Always must be the last hook
       protect('password'),
     ],
-    find: [
-      (context: HookContext): HookContext => {
-        console.log('data', context.result)
-        return context
-      },
-    ],
+    find: [],
     get: [],
     create: [],
     update: [],

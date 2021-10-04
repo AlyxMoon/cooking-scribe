@@ -4,9 +4,7 @@ import { DatabaseType } from '../../db'
 
 type Data = {
   id: string,
-  username: string,
-  email: string,
-  password?: string,
+  name: string,
   updatedAt?: string,
   createdAt?: string,
 } | Error
@@ -15,12 +13,12 @@ interface ServiceOptions {
   paginate?: any;
 }
 
-export class Users implements ServiceMethods<Data> {
+export class Groups implements ServiceMethods<Data> {
   id = 'id'
   app: Application
   options: ServiceOptions
   db: DatabaseType
-  defaultModel: 'Users' = 'Users'
+  defaultModel: 'Groups' = 'Groups'
 
   constructor (options: ServiceOptions = {}, app: Application) {
     this.options = options
@@ -28,7 +26,6 @@ export class Users implements ServiceMethods<Data> {
     this.db = app.get('rethinkdb') as DatabaseType
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async find (params: Params = {}): Promise<Data[] | Paginated<Data>> {
     const results = await this.db.find(this.defaultModel, params.query)
 
@@ -39,8 +36,7 @@ export class Users implements ServiceMethods<Data> {
   async get (id: string, params?: Params): Promise<Data> {
     return {
       id,
-      email: 'someone@example.com',
-      username: 'some guy',
+      name: 'Test Group',
     }
   }
 
@@ -64,8 +60,7 @@ export class Users implements ServiceMethods<Data> {
   async remove (id: string, params?: Params): Promise<Data> {
     return {
       id,
-      email: 'someone@example.com',
-      username: 'some guy',
+      name: 'Test Group',
     }
   }
 }
