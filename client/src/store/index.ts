@@ -20,8 +20,11 @@ export const store = createStore({
   plugins: [
     (store: Store<Record<string, unknown>>): void => {
       client.authentication.service.on('created', (data: AuthenticationResult) => {
-        console.log('authenticated boooyeah')
         store.commit('auth/setUser', data.user)
+      })
+
+      client.authentication.service.on('removed', () => {
+        store.commit('auth/clearUser')
       })
     },
   ],

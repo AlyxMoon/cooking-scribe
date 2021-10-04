@@ -54,4 +54,8 @@ export const mutations = {
   setUser: (state: State, user: UserData | null): void => {
     state.user = user
   },
+
+  clearUser: (state: State): void => {
+    state.user = null
+  },
 }
