@@ -1,6 +1,5 @@
 <template>
   <div class="page-sign-up">
-    {{ user1 }}
     <form
       class="pure-form pure-form-stacked"
       @submit.prevent="register"
