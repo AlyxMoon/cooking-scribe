@@ -43,5 +43,22 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+form fieldset {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2em;
 
+  padding: 1em;
+
+  label {
+    margin-top: 1em;
+    margin-left: 0.5em;
+    text-align: left;
+  }
+
+  input {
+    padding: 0.3em 1em;
+  }
+}
 </style>
