@@ -50,7 +50,8 @@ export default defineComponent({
           password: this.user.password,
         })
       } catch (error) {
-        return console.error(error)
+        console.error(error)
+        alert((error as Error).message)
       }
     },
   },
