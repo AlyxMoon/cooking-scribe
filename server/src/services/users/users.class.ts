@@ -1,4 +1,4 @@
-import { NullableId, Paginated, Params, ServiceMethods } from '@feathersjs/feathers'
+import { Paginated, Params, ServiceMethods } from '@feathersjs/feathers'
 import { Application } from '../../declarations'
 import { DatabaseType } from '../../db'
 
@@ -51,13 +51,16 @@ export class Users implements ServiceMethods<Data> {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async update (id: NullableId, data: Data, params?: Params): Promise<Data> {
+  async update (id: string, data: Data, params?: Params): Promise<Data> {
     return data
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async patch (id: NullableId, data: Data, params?: Params): Promise<Data> {
-    return data
+  async patch (id: string, data: Data, params?: Params): Promise<Data> {
+    if (id === null) return data
+
+    const result = await this.db.patch(this.defaultModel, id, data)
+    return { ...result }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

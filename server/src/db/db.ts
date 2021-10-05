@@ -81,6 +81,21 @@ class Database {
     const newModel = new this.models[model](data)
     return newModel.saveAll()
   }
+
+  patch = async (model: KnownModels, id: string, data: { [key: string]: any }): Promise<Document> => {
+    const uniqueFieldsWithErrors = await this.validateUniqueFields(model, data)
+    if (uniqueFieldsWithErrors.length) {
+      const fields = uniqueFieldsWithErrors.join(', ')
+      throw new Error(`The following fields have values that would conflict: ${fields}`)
+    }
+
+    // rethinkDB.db(this.config.db as string).table(model)
+    //   .filter({ [field]: data[field] })
+    //   .limit(1).count().eq(1)
+
+    const modelToPatch = this.models[model].get(id)
+    return modelToPatch.merge(data).saveAll()
+  }
 }
 
 export default Database

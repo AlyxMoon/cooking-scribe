@@ -7,9 +7,9 @@ const createGroupForUser = () => async (context: HookContext): Promise<HookConte
     name: `Group for ${context.data.username}`,
   })
 
-  context.data.idGroup = newGroup.id
-
-  return context
+  return context.app.service('users').patch({
+    idGroup: newGroup.id,
+  })
 }
 
 export default createGroupForUser

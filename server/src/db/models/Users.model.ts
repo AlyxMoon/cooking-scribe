@@ -19,7 +19,7 @@ export default (thinkagain: ThinkAgain): Model => {
         default: formatISO(new Date()),
       },
     },
-    required: ['idGroup', 'username', 'email', 'password'],
+    required: ['username', 'email', 'password'],
     uniqueFields: ['username', 'email'],
   })
 }
