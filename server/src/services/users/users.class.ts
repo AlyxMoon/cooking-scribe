@@ -37,11 +37,7 @@ export class Users implements ServiceMethods<Data> {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async get (id: string, params?: Params): Promise<Data> {
-    return {
-      id,
-      email: 'someone@example.com',
-      username: 'some guy',
-    }
+    return this.db.get(this.defaultModel, id)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

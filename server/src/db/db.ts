@@ -52,23 +52,27 @@ class Database {
     }, [])
   }
 
-  find = async (model: KnownModels, filters: Record<string, any> = {}): Promise<Document[]> => {
+  get = async (
+    model: KnownModels,
+    id: string,
+    filters: Record<string, any> = {},
+  ): Promise<Document> => {
+    return this.models[model].get(id)
+  }
+
+  find = async (
+    model: KnownModels,
+    filters: Record<string, any> = {},
+  ): Promise<Document[]> => {
     const {
       $limit: limit,
       ...searchParams
-    } = (filters)
+    } = filters
 
-    const results: Document[] = []
+    let query = this.models[model].filter(searchParams)
+    if (limit) query = query.limit(limit)
 
-    if (limit) {
-      const documents = await this.models[model].filter(searchParams).limit(limit).run()
-      results.push(...documents)
-    } else {
-      const documents = await this.models[model].filter(searchParams).run()
-      results.push(...documents)
-    }
-
-    return results
+    return (query.run() as Document[])
   }
 
   create = async (model: KnownModels, data: { [key: string]: any }): Promise<Document> => {
