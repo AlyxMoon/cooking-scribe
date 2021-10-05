@@ -1,9 +1,18 @@
-import rethinkDB, { Connection, ConnectionOptions, Expression } from 'rethinkdb'
+import rethinkDB, { Connection, ConnectionOptions, Expression, WriteResult } from 'rethinkdb'
 import thinkagain, { Document, Model, ThinkAgain } from 'thinkagain'
 
 import models from './models'
 
 export type KnownModels = 'Users' | 'Groups'
+
+/* eslint-disable camelcase */
+interface RemoveResult extends WriteResult {
+  changes: {
+    new_val: Record<string, any> | null,
+    old_val: Record<string, any> | null,
+  }[],
+}
+/* eslint-enable camelcase */
 
 class Database {
   config: ConnectionOptions
@@ -47,6 +56,8 @@ class Database {
     }
 
     return await uniqueFields.reduce(async (errorFields: string[], field: string) => {
+      if (!(field in data)) return errorFields
+
       const fieldExists = await buildQuery(field).run(this.connection)
       return fieldExists ? (await errorFields).concat(field) : errorFields
     }, [])
@@ -93,20 +104,17 @@ class Database {
       throw new Error(`The following fields have values that would conflict: ${fields}`)
     }
 
-    // rethinkDB.db(this.config.db as string).table(model)
-    //   .filter({ [field]: data[field] })
-    //   .limit(1).count().eq(1)
-
-    const modelToPatch = this.models[model].get(id)
+    const modelToPatch = await this.models[model].get(id).run()
     return modelToPatch.merge(data).saveAll()
   }
 
   remove = async (model: KnownModels, id: string): Promise<Document> => {
-    console.log('going to remove?', model, id)
     try {
-      const result = await this.models[model].get(id).delete().run()
-      console.log(result)
-      return result
+      const result = await rethinkDB.table(model).get(id).delete({
+        returnChanges: true,
+      }).run(this.connection) as RemoveResult
+
+      return result.changes[0].old_val
     } catch (err) {
       const error = err as Error
       if (error.name === 'DocumentNotFoundError') {

@@ -1,7 +1,8 @@
 import * as feathersAuthentication from '@feathersjs/authentication'
 import * as authLocal from '@feathersjs/authentication-local'
 
-import createGroupForUser from './hooks/createGroupForUser'
+import createAndAttachGroup from './hooks/createAndAttachGroup'
+import removeAssociatedGroup from './hooks/removeAssociatedGroup'
 
 const { authenticate } = feathersAuthentication.hooks
 const { hashPassword, protect } = authLocal.hooks
@@ -12,13 +13,23 @@ export default {
     find: [
       authenticate('jwt'),
     ],
-    get: [authenticate('jwt')],
+    get: [
+      authenticate('jwt'),
+    ],
     create: [
       hashPassword('password'),
     ],
-    update: [hashPassword('password'), authenticate('jwt')],
-    patch: [hashPassword('password'), authenticate('jwt')],
-    remove: [authenticate('jwt')],
+    update: [
+      hashPassword('password'),
+      authenticate('jwt'),
+    ],
+    patch: [
+      hashPassword('password'),
+      authenticate('jwt'),
+    ],
+    remove: [
+      authenticate('jwt'),
+    ],
   },
 
   after: {
@@ -30,11 +41,13 @@ export default {
     find: [],
     get: [],
     create: [
-      createGroupForUser(),
+      createAndAttachGroup(),
     ],
     update: [],
     patch: [],
-    remove: [],
+    remove: [
+      removeAssociatedGroup(),
+    ],
   },
 
   error: {
