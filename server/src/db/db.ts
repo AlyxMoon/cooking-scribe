@@ -3,7 +3,7 @@ import thinkagain, { Document, Model, ThinkAgain } from 'thinkagain'
 
 import models from './models'
 
-type KnownModels = 'Users' | 'Groups'
+export type KnownModels = 'Users' | 'Groups'
 
 class Database {
   config: ConnectionOptions
@@ -99,6 +99,22 @@ class Database {
 
     const modelToPatch = this.models[model].get(id)
     return modelToPatch.merge(data).saveAll()
+  }
+
+  remove = async (model: KnownModels, id: string): Promise<Document> => {
+    console.log('going to remove?', model, id)
+    try {
+      const result = await this.models[model].get(id).delete().run()
+      console.log(result)
+      return result
+    } catch (err) {
+      const error = err as Error
+      if (error.name === 'DocumentNotFoundError') {
+        return {}
+      }
+
+      throw error
+    }
   }
 }
 

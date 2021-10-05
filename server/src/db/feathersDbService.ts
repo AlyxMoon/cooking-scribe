@@ -1,49 +1,47 @@
 import { Paginated, Params, ServiceMethods } from '@feathersjs/feathers'
-import { Application } from '../../declarations'
-import { DatabaseType } from '../../db'
+import { Application } from '@feathersjs/express'
+import Database, { KnownModels } from './db'
 
-type Data = {
-  id: string,
-  username: string,
-  email: string,
-  password?: string,
-  updatedAt?: string,
-  createdAt?: string,
-} | Error
-
-interface ServiceOptions {
-  paginate?: any;
+export type ServiceOptions = {
+  [key: string]: any,
+  id?: string,
+  model: KnownModels,
+  paginate?: Record<any, unknown>,
 }
 
-export class Users implements ServiceMethods<Data> {
-  id = 'id'
-  app: Application
-  options: ServiceOptions
-  db: DatabaseType
-  defaultModel: 'Users' = 'Users'
+type Data = {
+  [key: string]: any,
+} | Error
 
-  constructor (options: ServiceOptions = {}, app: Application) {
+export class Service implements ServiceMethods<Data> {
+  id: string
+  app!: Application
+  options!: ServiceOptions
+  db!: Database
+  model!: KnownModels
+
+  constructor (options: ServiceOptions) {
     this.options = options
-    this.app = app
-    this.db = app.get('rethinkdb') as DatabaseType
+    this.id = options.id || 'id'
+    this.model = this.options.model
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async find (params: Params = {}): Promise<Data[] | Paginated<Data>> {
-    const results = await this.db.find(this.defaultModel, params.query)
+    const results = await this.db.find(this.model, params.query)
 
     return results.map((result: any) => ({ ...result }))
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async get (id: string, params?: Params): Promise<Data> {
-    const result = await this.db.get(this.defaultModel, id)
+    const result = await this.db.get(this.model, id)
     return { ...result }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async create (data: Data, params?: Params): Promise<Data> {
-    const result = await this.db.create(this.defaultModel, data)
+    const result = await this.db.create(this.model, data)
     return { ...result }
   }
 
@@ -56,16 +54,22 @@ export class Users implements ServiceMethods<Data> {
   async patch (id: string, data: Data, params?: Params): Promise<Data> {
     if (id === null) return data
 
-    const result = await this.db.patch(this.defaultModel, id, data)
+    const result = await this.db.patch(this.model, id, data)
     return { ...result }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async remove (id: string, params?: Params): Promise<Data> {
-    return {
-      id,
-      email: 'someone@example.com',
-      username: 'some guy',
-    }
+    const result = await this.db.remove(this.model, id)
+    return { ...result }
   }
+
+  setup (app: Application): void {
+    this.app = app
+    this.db = app.get('rethinkdb') as Database
+  }
+}
+
+export default (options: ServiceOptions): Service => {
+  return new Service(options)
 }
