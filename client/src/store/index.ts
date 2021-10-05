@@ -26,6 +26,20 @@ export const store = createStore({
       client.authentication.service.on('removed', () => {
         store.commit('auth/clearUser')
       })
+
+      // works
+      client.service('users').on('created', (data: any) => {
+        console.log('something got created!', data)
+      })
+
+      client.service('users').on('patched', (data: any) => {
+        console.log('something got patched!', data)
+      })
+
+      // doesn't work
+      client.service('users').on('removed', (data: any) => {
+        console.log('something got removed!', data)
+      })
     },
   ],
 })

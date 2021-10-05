@@ -10,10 +10,12 @@ export default function (app: Application): void {
 
   app.on('connection', (connection: any): void => {
     // On a new real-time connection, add it to the anonymous channel
+    console.log('got a connection', connection)
     app.channel('anonymous').join(connection)
   })
 
   app.on('login', (authResult: any, { connection }: any): void => {
+    console.log('authenticated', authResult, connection)
     // connection can be undefined if there is no
     // real-time connection, e.g. when logging in via REST
     if (connection) {
@@ -44,6 +46,8 @@ export default function (app: Application): void {
   app.publish((data: any, hook: HookContext) => {
     // Here you can add event publishers to channels set up in `channels.ts`
     // To publish only for a specific event use `app.publish(eventname, () => {})`
+
+    console.log(data)
 
     console.log('Publishing all events to all authenticated users. See `channels.ts` and https://docs.feathersjs.com/api/channels.html for more information.'); // eslint-disable-line
 
