@@ -57,7 +57,7 @@ class Database {
     id: string,
     filters: Record<string, any> = {},
   ): Promise<Document> => {
-    return this.models[model].get(id)
+    return this.models[model].get(id).run()
   }
 
   find = async (
