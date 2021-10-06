@@ -3,12 +3,12 @@ import { fastJoin, ResolverMap } from 'feathers-hooks-common'
 const groupResolvers: ResolverMap<any> = {
   joins: {
     users: () => async (group, context) => {
-      console.log('doing stuff!', group)
       group.users = await context.app.service('users').find({
-        idGroup: group.id,
+        ...context.params,
+        query: {
+          idGroup: group.id,
+        },
       })
-
-      console.log('did we fast join?', group)
 
       return group
     },
