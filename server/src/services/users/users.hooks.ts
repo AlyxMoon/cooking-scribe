@@ -2,7 +2,7 @@ import * as feathersAuthentication from '@feathersjs/authentication'
 import * as authLocal from '@feathersjs/authentication-local'
 
 import createAndAttachGroup from './hooks/createAndAttachGroup'
-import removeAssociatedGroup from './hooks/removeAssociatedGroup'
+// import removeAssociatedGroup from './hooks/removeAssociatedGroup'
 
 const { authenticate } = feathersAuthentication.hooks
 const { hashPassword, protect } = authLocal.hooks
@@ -44,7 +44,7 @@ export default {
     update: [],
     patch: [],
     remove: [
-      removeAssociatedGroup(),
+      // removeAssociatedGroup(),
     ],
   },
 
