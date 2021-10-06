@@ -12,6 +12,7 @@ export type DataModelUser = {
 export type DataModelGroup = {
   id: string,
   name: string,
+  users?: DataModelUser[],
   createdAt: string,
   updatedAt: string,
 }

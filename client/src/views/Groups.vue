@@ -1,5 +1,5 @@
 <template>
-  <h1>Users</h1>
+  <h1>Groups</h1>
 
   <table class="pure-table">
     <thead>
@@ -14,7 +14,7 @@
       <tr v-for="group of groups" :key="group.id">
         <td>{{ group.id }}</td>
         <td>{{ group.name }}</td>
-        <td>{{ 0 }}</td>
+        <td>{{ group.users?.length || 0 }}</td>
         <td>
           <button
             class="pure-button"
