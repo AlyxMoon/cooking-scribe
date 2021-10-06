@@ -27,7 +27,6 @@ export const store = createStore({
         store.commit('auth/clearUser')
       })
 
-      // works
       client.service('users').on('created', (data: any) => {
         console.log('something got created!', data)
       })
@@ -36,7 +35,6 @@ export const store = createStore({
         console.log('something got patched!', data)
       })
 
-      // doesn't work
       client.service('users').on('removed', (data: any) => {
         console.log('something got removed!', data)
       })
