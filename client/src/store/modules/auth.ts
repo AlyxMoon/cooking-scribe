@@ -17,7 +17,7 @@ export type UserData = {
   password?: string,
 }
 
-type State = {
+export type State = {
   user: UserData | null,
 }
 

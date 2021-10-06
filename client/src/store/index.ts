@@ -1,24 +1,24 @@
 import { createStore, Store } from 'vuex'
 import { AuthenticationResult } from '@feathersjs/authentication'
+import { DataModelUser } from '@/typings'
 
 import client from '@/lib/api'
 import * as authModule from './modules/auth'
 import * as usersModule from './modules/users'
 
-export const store = createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+export type AppState = {
+  auth: authModule.State,
+  users: usersModule.State,
+}
+
+export const store = createStore<AppState>({
   modules: {
     auth: authModule,
     users: usersModule,
   },
 
   plugins: [
-    (store: Store<Record<string, unknown>>): void => {
+    (store: Store<AppState>): void => {
       client.authentication.service.on('created', (data: AuthenticationResult) => {
         store.commit('auth/setUser', data.user)
       })
@@ -31,8 +31,14 @@ export const store = createStore({
         console.log('something got created!', data)
       })
 
-      client.service('users').on('patched', (data: any) => {
+      client.service('users').on('patched', (data: DataModelUser) => {
         console.log('something got patched!', data)
+        console.log(store.state)
+
+        if (data.id === store.state.auth.user?.id) {
+          store.commit('auth/setUser', data)
+          console.log('are we committing?!')
+        }
       })
 
       client.service('users').on('removed', (data: any) => {

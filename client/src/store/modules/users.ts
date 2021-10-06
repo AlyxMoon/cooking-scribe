@@ -8,7 +8,7 @@ export type CreateUserData = {
   password: string,
 }
 
-type State = Record<string, unknown>
+export type State = Record<string, unknown>
 
 type ModuleActionContent = ActionContext<State, Record<string, unknown>>
 
