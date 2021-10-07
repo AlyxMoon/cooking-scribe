@@ -29,14 +29,17 @@
 
     <form class="pure-form" @submit.prevent="createGroupChat">
       <input type="text" v-model="currentMessage" />
-      <button class="pure-button">Send</button>
+      <button
+        class="pure-button"
+        :disabled="!currentMessage.length"
+      >Send</button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
 import { mapState } from 'vuex'
-import { defineComponent, onUnmounted } from 'vue'
+import { defineComponent } from 'vue'
 import { DataModelGroup, DataModelGroupChat } from '@/typings'
 import api from '@/lib/api'
 
@@ -94,16 +97,23 @@ export default defineComponent({
       })
     },
 
-    async createGroupChat (): Promise<DataModelGroupChat> {
-      return api.service('groupChats').create({
-        idGroup: this.idGroup,
-        idUser: this.user.id,
-        message: this.currentMessage,
-      })
+    async createGroupChat (): Promise<void> {
+      try {
+        await api.service('groupChats').create({
+          idGroup: this.idGroup,
+          idUser: this.user.id,
+          message: this.currentMessage,
+        })
+
+        this.currentMessage = ''
+      } catch (err) {
+        const error = err as Error
+
+        alert(error.message)
+      }
     },
 
     addChatToList (chat: DataModelGroupChat): void {
-      console.log('got the group chat add event', chat)
       this.chats.push(chat)
     },
   },
