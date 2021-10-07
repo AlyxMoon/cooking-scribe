@@ -5,6 +5,10 @@
     <router-link :to="{ name: 'SignIn' }">Sign In</router-link>
     <router-link :to="{ name: 'Users' }">Users</router-link>
     <router-link :to="{ name: 'Groups' }">Groups</router-link>
+    <router-link
+      v-if="isLoggedIn"
+      :to="{ name: 'Group', params: { idGroup: user.idGroup } }"
+    >Your Group</router-link>
 
     <div class="user-info">
       User: {{ isLoggedIn ? user.username : 'Not Logged In' }}
