@@ -19,11 +19,11 @@ export const store = createStore<AppState>({
 
   plugins: [
     (store: Store<AppState>): void => {
-      client.authentication.service.on('created', (data: AuthenticationResult) => {
+      client.on('login', (data: AuthenticationResult) => {
         store.commit('auth/setUser', data.user)
       })
 
-      client.authentication.service.on('removed', () => {
+      client.on('logout', () => {
         store.commit('auth/clearUser')
       })
 
@@ -37,7 +37,6 @@ export const store = createStore<AppState>({
 
         if (data.id === store.state.auth.user?.id) {
           store.commit('auth/setUser', data)
-          console.log('are we committing?!')
         }
       })
 

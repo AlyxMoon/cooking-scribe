@@ -27,6 +27,10 @@ export default function (app: Application): void {
     return app.channel('authenticated')
   })
 
+  app.service('groupChats').publish('created', (data: any) => {
+    return app.channel(`groups/${data.idGroup}`)
+  })
+
   // Here you can also add service specific event publishers
   // e.g. the publish the `users` service `created` event to the `admins` channel
   // app.service('users').publish('created', () => app.channel('admins'));

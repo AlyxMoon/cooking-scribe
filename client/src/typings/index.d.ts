@@ -16,3 +16,12 @@ export type DataModelGroup = {
   createdAt: string,
   updatedAt: string,
 }
+
+export type DataModelGroupChat = {
+  id: string,
+  idUser: string,
+  idGroup: string,
+  message: string,
+  createdAt: string,
+  updatedAt: string,
+}
