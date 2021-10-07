@@ -3,7 +3,7 @@ import thinkagain, { Document, Model, ThinkAgain } from 'thinkagain'
 
 import models from './models'
 
-export type KnownModels = 'Users' | 'Groups'
+export type KnownModels = 'Users' | 'Groups' | 'GroupChats'
 
 /* eslint-disable camelcase */
 interface RemoveResult extends WriteResult {
