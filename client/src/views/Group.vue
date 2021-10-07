@@ -17,7 +17,7 @@
 
   <h3>Group chat</h3>
   <div class="chat-box">
-    <div class="chat-list">
+    <div class="chat-list" ref="chatList">
       <template
         v-for="chat in chats"
         :key="chat.id"
@@ -78,6 +78,9 @@ export default defineComponent({
     this.chats = results[1]
 
     api.service('groupChats').on('created', this.addChatToList)
+
+    await new Promise(resolve => setTimeout(resolve, 500))
+    this.scrollDownChatList()
   },
 
   beforeUnmount () {
@@ -115,6 +118,12 @@ export default defineComponent({
 
     addChatToList (chat: DataModelGroupChat): void {
       this.chats.push(chat)
+      this.scrollDownChatList()
+    },
+
+    scrollDownChatList (): void {
+      const elChatList = this.$refs.chatList as HTMLElement
+      elChatList.scroll({ top: elChatList.clientHeight, behavior: 'smooth' })
     },
   },
 })
