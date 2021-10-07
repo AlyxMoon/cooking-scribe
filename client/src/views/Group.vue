@@ -22,7 +22,7 @@
         v-for="chat in chats"
         :key="chat.id"
       >
-        <span>{{ chat.idUser }}</span>
+        <span>{{ chat.user ? chat.user.username : 'anonymous' }}</span>
         <p>{{ chat.message }}</p>
       </template>
     </div>
@@ -93,11 +93,14 @@ export default defineComponent({
     },
 
     async getGroupChats (): Promise<DataModelGroupChat[]> {
-      return api.service('groupChats').find({
+      const result = await api.service('groupChats').find({
         query: {
           idGroup: this.idGroup,
         },
       })
+
+      console.log(result)
+      return result
     },
 
     async createGroupChat (): Promise<void> {
@@ -164,6 +167,10 @@ dl {
     padding: 0.5em;
 
     overflow-y: scroll;
+
+    span {
+      font-weight: bold;
+    }
   }
 
   form {

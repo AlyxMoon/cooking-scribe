@@ -22,6 +22,7 @@ export type DataModelGroupChat = {
   idUser: string,
   idGroup: string,
   message: string,
+  user?: DataModelUser,
   createdAt: string,
   updatedAt: string,
 }
