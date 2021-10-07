@@ -8,12 +8,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import apiClient from '@/lib/api'
 import Navbar from '@/components/Navbar.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
     Navbar,
+  },
+
+  async created () {
+    try {
+      apiClient.reAuthenticate()
+    } catch (err) {}
   },
 })
 </script>
