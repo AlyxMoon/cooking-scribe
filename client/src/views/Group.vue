@@ -28,7 +28,7 @@
     </div>
 
     <form class="pure-form" @submit.prevent="createGroupChat">
-      <input type="text" v-model="currentMessage" />
+      <input type="text" placeholder="Send a message" v-model="currentMessage" />
       <button
         class="pure-button"
         :disabled="!currentMessage.length"
@@ -141,9 +141,8 @@ dl {
 .chat-box {
   display: flex;
   flex-direction: column;
-  gap: 3em;
 
-  padding: 0.5em;
+  max-height: 30rem;
 
   border: 1px solid black;
 
@@ -152,6 +151,23 @@ dl {
     grid-template-columns: auto 1fr;
     gap: 0.5em 1em;
 
+    flex: 1 1 auto;
+    padding: 0.5em;
+
+    overflow-y: scroll;
+  }
+
+  form {
+    display: flex;
+
+    flex: 0 1 auto;
+    padding: 0.5em;
+
+    border-top: 2px solid black;
+
+    input {
+      flex-grow: 1;
+    }
   }
 
   p {
